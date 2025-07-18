@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wounded Healing Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 450px;
+      margin: 40px auto;
+    }
+    input, button {
+      padding: 8px;
+      margin: 6px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    label {
+      font-weight: bold;
+    }
+    #result {
+      font-weight: bold;
+      margin-top: 16px;
+      font-size: 1.1em;
+      color: #004d00;
+    }
+    .error {
+      color: red;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Wounded Healing Calculator</h2>
+
+  <label>Wounded (example from game):</label>
+  <input type="number" id="wounded" placeholder="e.g. 1000" min="1" max="1000">
+
+  <label>Healing time – Minutes (as shown in game):</label>
+  <input type="number" id="minutes" placeholder="e.g. 50" min="0" max="59">
+
+  <label>Healing time – Seconds (as shown in game):</label>
+  <input type="number" id="seconds" placeholder="e.g. 3" min="0" max="59">
+
+  <label>Number of helpers (1–100):</label>
+  <input type="number" id="helpers" placeholder="e.g. 7" min="1" max="100">
+
+  <label>Total wounded in hospital (1–300000):</label>
+  <input type="number" id="total" placeholder="e.g. 55000" min="1" max="300000">
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculate() {
+      const wounded = parseInt(document.getElementById("wounded").value, 10);
+      const minutes = parseInt(document.getElementById("minutes").value, 10);
+      const seconds = parseInt(document.getElementById("seconds").value, 10);
+      const helpers = parseInt(document.getElementById("helpers").value, 10);
+      const total = parseInt(document.getElementById("total").value, 10);
+
+      const resultDiv = document.getElementById("result");
+
+      if (
+        isNaN(wounded) || wounded < 1 || wounded > 1000 ||
+        isNaN(minutes) || minutes < 0 || minutes > 59 ||
+        isNaN(seconds) || seconds < 0 || seconds > 59 ||
+        isNaN(helpers) || helpers < 1 || helpers > 100 ||
+        isNaN(total) || total < 1 || total > 300000
+      ) {
+        resultDiv.innerHTML = '<span class="error">Please enter valid values in all fields.</span>';
+        return;
+      }
+
+      const inputSeconds = minutes * 60 + seconds;
+      const targetSeconds = helpers * 257;
+      const portion = wounded * targetSeconds / inputSeconds;
+      const repetitions = Math.ceil(total / portion);
+
+      const totalTimeSec = repetitions * 3;
+      const timeMin = Math.floor(totalTimeSec / 60);
+      const timeSec = totalTimeSec % 60;
+
+      resultDiv.innerHTML = `
+        🩹 Wounded per batch: <strong>${Math.round(portion)}</strong><br>
+        🔁 Required healing cycles: <strong>${repetitions}</strong><br>
+        🕒 Estimated total time: <strong>${timeMin}m ${timeSec}s</strong>
+      `;
+    }
+  </script>
+
+</body>
+</html>
