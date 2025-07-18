@@ -8,22 +8,54 @@
       font-family: Arial, sans-serif;
       max-width: 450px;
       margin: 40px auto;
+      background-color: #ffffff;
+      color: #000000;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
+
     input, button {
       padding: 8px;
       margin: 6px 0;
       width: 100%;
       box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
+
+    input:focus {
+      outline: none;
+      border-color: #66afe9;
+      box-shadow: 0 0 3px rgba(102, 175, 233, 0.6);
+    }
+
     label {
       font-weight: bold;
+      display: block;
+      margin-top: 10px;
     }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
     #result {
       font-weight: bold;
       margin-top: 16px;
       font-size: 1.1em;
       color: #004d00;
     }
+
     .error {
       color: red;
       font-size: 0.95em;
