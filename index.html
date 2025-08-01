@@ -71,16 +71,19 @@
 
   <h2>Wounded Healing Calculator</h2>
 
-  <label class="required">Wounded (1-999999):</label>
+  <label class="required">Wounded (1–999999):</label>
   <input type="number" id="wounded" placeholder="e.g. 1000" min="1" max="999999" required>
 
-  <label class="required">Healing time – Hours (0-99):</label>
+  <label class="required">Healing time – Days (0–31):</label>
+  <input type="number" id="days" value="0" min="0" max="31" required>
+
+  <label class="required">Healing time – Hours (0–99):</label>
   <input type="number" id="hours" value="0" min="0" max="99" required>
 
-  <label class="required">Healing time – Minutes (0-59):</label>
+  <label class="required">Healing time – Minutes (0–59):</label>
   <input type="number" id="minutes" value="0" min="0" max="59" required>
 
-  <label class="required">Healing time – Seconds (0-59):</label>
+  <label class="required">Healing time – Seconds (0–59):</label>
   <input type="number" id="seconds" value="0" min="0" max="59" required>
 
   <label class="required">Number of helpers (1–99):</label>
@@ -96,6 +99,7 @@
   <script>
     function calculate() {
       const wounded = parseInt(document.getElementById("wounded").value, 10);
+      const days = parseInt(document.getElementById("days").value, 10);
       const hours = parseInt(document.getElementById("hours").value, 10);
       const minutes = parseInt(document.getElementById("minutes").value, 10);
       const seconds = parseInt(document.getElementById("seconds").value, 10);
@@ -105,9 +109,9 @@
 
       const resultDiv = document.getElementById("result");
 
-      // Input validation
       if (
         isNaN(wounded) || wounded < 1 || wounded > 999999 ||
+        isNaN(days) || days < 0 || days > 31 ||
         isNaN(hours) || hours < 0 || hours > 99 ||
         isNaN(minutes) || minutes < 0 || minutes > 59 ||
         isNaN(seconds) || seconds < 0 || seconds > 59 ||
@@ -118,8 +122,7 @@
         return;
       }
 
-      // Convert full healing time to seconds
-      const inputSeconds = hours * 3600 + minutes * 60 + seconds;
+      const inputSeconds = days * 86400 + hours * 3600 + minutes * 60 + seconds;
       const targetSeconds = helpers * 257;
 
       const portion = wounded * targetSeconds / inputSeconds;
