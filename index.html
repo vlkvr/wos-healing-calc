@@ -15,6 +15,34 @@
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
+    h2.header-with-help {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .help-link {
+      cursor: pointer;
+      font-size: 0.7em;
+      color: #007bff;
+      text-decoration: underline;
+    }
+
+    .help-link:hover {
+      color: #0056b3;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .required::after {
+      content: " *";
+      color: red;
+    }
+
     input, button {
       padding: 8px;
       margin: 6px 0;
@@ -28,17 +56,6 @@
       outline: none;
       border-color: #66afe9;
       box-shadow: 0 0 3px rgba(102, 175, 233, 0.6);
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-
-    .required::after {
-      content: " *";
-      color: red;
     }
 
     button {
@@ -65,11 +82,57 @@
       color: red;
       font-size: 0.95em;
     }
+
+    /* Modal Styles */
+    #helpModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    #helpModal .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    #helpModal .close-button {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #helpModal .close-button:hover {
+      color: #000;
+    }
+
+    #helpModal img {
+      width: 100%;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
 
-  <h2>Wounded Healing Calculator</h2>
+  <h2 class="header-with-help">
+    Wounded Healing Calculator
+    <span class="help-link" onclick="openHelp()">❓ Field Input Help</span>
+  </h2>
 
   <label class="required">Wounded (1–999999):</label>
   <input type="number" id="wounded" placeholder="e.g. 1000" min="1" max="999999" required>
@@ -96,6 +159,15 @@
 
   <div id="result"></div>
 
+  <!-- Modal -->
+  <div id="helpModal" onclick="handleBackdropClick(event)">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeHelp()">&times;</span>
+      <h3 style="margin-top: 0;">How to fill the fields</h3>
+      <img src="healing_calc.png" alt="Field help guide">
+    </div>
+  </div>
+
   <script>
     function calculate() {
       const wounded = parseInt(document.getElementById("wounded").value, 10);
@@ -112,7 +184,7 @@
       if (
         isNaN(wounded) || wounded < 1 || wounded > 999999 ||
         isNaN(days) || days < 0 || days > 31 ||
-        isNaN(hours) || hours < 0 || hours > 99 ||
+        isNaN(hours) || hours < 0 || hours > 23 ||
         isNaN(minutes) || minutes < 0 || minutes > 59 ||
         isNaN(seconds) || seconds < 0 || seconds > 59 ||
         isNaN(helpers) || helpers < 1 || helpers > 99 ||
@@ -139,6 +211,22 @@
       }
 
       resultDiv.innerHTML = html;
+    }
+
+    function openHelp() {
+      document.getElementById("helpModal").style.display = "block";
+    }
+
+    function closeHelp() {
+      document.getElementById("helpModal").style.display = "none";
+    }
+
+    function handleBackdropClick(event) {
+      const modal = document.getElementById("helpModal");
+      const content = document.querySelector("#helpModal .modal-content");
+      if (!content.contains(event.target)) {
+        closeHelp();
+      }
     }
   </script>
 
